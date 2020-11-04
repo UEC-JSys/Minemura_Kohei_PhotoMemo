@@ -10,36 +10,48 @@
     <EditText
         android:id="@+id/addPhotoEditText"
         android:layout_width="match_parent"
-        android:layout_height="99dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_margin="16dp"
+        android:autofillHints=""
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textAutoComplete"
+        android:hint="@string/add_text_hint"
+        android:textSize="24sp"
+        tools:ignore="LabelFor" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/addPhotoImageView"
         android:layout_width="match_parent"
-        android:layout_height="351dp"
+        android:layout_height="0pt"
+        android:layout_margin="16dp"
+        android:layout_weight="8"
+        android:scaleType="fitXY"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/addPhotoOpenButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/add_open_button_text"
+            tools:ignore="ButtonStyle,NestedWeights"/>
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/addPhotoSaveButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/add_save_button_text"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>
