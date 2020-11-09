@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 data class Photo (
     @PrimaryKey @ColumnInfo(name = "uri") val uri: String,
     @ColumnInfo(name = "memo") val memo: String
-    ) {
+) {
     }
 
 @Dao
@@ -58,20 +58,5 @@ class PhotoRepository(private val photoDao: PhotoDao){
 
     suspend fun insert(photo: Photo) {
         photoDao.insert(photo)
-    }
-}
-
-class AddPhotoViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PhotoRepository
-    val allPhotos: LiveData<List<Photo>>
-
-    init {
-        val photoDao = PhotoRoomDatabase.getPhotoDatabase(application).photoDao()
-        repository = PhotoRepository(photoDao)
-        allPhotos = repository.allPhotos
-    }
-
-    fun insert (photo:Photo) = viewModelScope.launch(Dispatchers.IO){
-        repository.insert(photo)
     }
 }
