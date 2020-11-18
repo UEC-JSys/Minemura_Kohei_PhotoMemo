@@ -58,17 +58,6 @@ class AddPhotoActivity : AppCompatActivity() {
         }
         viewModel = ViewModelProvider(this).get(AddPhotoViewModel::class.java)
 
-        // ユーザへの外部ストレージへのアクセス許可申請
-        val permission = ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        if(permission != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.MANAGE_EXTERNAL_STORAGE),
-                requestExternalStorage
-            )
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,24 +78,6 @@ class AddPhotoActivity : AppCompatActivity() {
                     "setting ImageURI.",
                     Toast.LENGTH_LONG
                 ).show()
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == requestExternalStorage){
-            if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(
-                    this,
-                    "Must have permission to access external storage.",
-                    Toast.LENGTH_LONG
-                ).show()
-                finish()
             }
         }
     }

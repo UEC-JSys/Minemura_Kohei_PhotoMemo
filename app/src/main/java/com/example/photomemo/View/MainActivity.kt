@@ -50,9 +50,38 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, addActivityRequestCode)
         }
 
+        // ユーザへの外部ストレージへのアクセス許可申請
+        val permission = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        //android.Manifest.permission.XXXXXXXXXX が一致するように
+        if(permission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                requestExternalStorage
+            )
+        }
+
     }
 
-
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == requestExternalStorage){
+            if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(
+                    this,
+                    "Must have permission to access external storage.",
+                    Toast.LENGTH_LONG
+                ).show()
+                finish()
+            }
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
