@@ -1,15 +1,16 @@
-package com.example.photomemo
+package com.example.photomemo.View
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_add_photo.view.*
+import com.example.photomemo.Model.Photo
+import com.example.photomemo.R
 
 
 // p.70から
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_add_photo.view.*
 class PhotoListAdapter internal constructor(context: Context)
     : RecyclerView.Adapter<PhotoListAdapter.PhotoViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var photos = emptyList<Photo>()
+    private var photos = emptyList<Pair<Photo, Bitmap?>>()
 
     inner class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photoItemView: ImageView = itemView.findViewById(R.id.imageView)
@@ -31,11 +32,15 @@ class PhotoListAdapter internal constructor(context: Context)
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val current = photos[position]
-        holder.memoItemView.text = current.memo
-        holder.photoItemView.setImageURI(Uri.parse(current.uri))
+        holder.memoItemView.text = current.first.memo
+        if(current.second != null){
+            holder.photoItemView.setImageBitmap(current.second)
+        }else{
+            holder.photoItemView.setImageURI(Uri.parse(current.first.uri))
+        }
     }
 
-    internal fun setPhotos(photos: List<Photo>){
+    internal fun setPhotos(photos: List<Pair<Photo, Bitmap?>>){
         this.photos = photos
         notifyDataSetChanged()
     }
