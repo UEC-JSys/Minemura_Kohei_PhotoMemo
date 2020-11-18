@@ -27,12 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toast.makeText(
-            applicationContext,
-            "Start App.",
-            Toast.LENGTH_LONG
-        ).show()
-
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = PhotoListAdapter(this)
         recyclerView.adapter = adapter
@@ -42,6 +36,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.allPhotos.observe(this, Observer { photos ->
             photos?.let { adapter.setPhotos(it) }
         })
+
+        Toast.makeText(
+            applicationContext,
+            "Start App.",
+            Toast.LENGTH_LONG
+        ).show()
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener{
@@ -66,20 +66,6 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-class AddPhotoViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PhotoRepository
-    val allPhotos: LiveData<List<Photo>>
-
-    init {
-        val photoDao = PhotoRoomDatabase.getPhotoDatabase(application).photoDao()
-        repository = PhotoRepository(photoDao)
-        allPhotos = repository.allPhotos
-    }
-
-    fun insert (photo:Photo) = viewModelScope.launch(Dispatchers.IO){
-        repository.insert(photo)
-    }
-}
 /*
 class AddPhotoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PhotoRepository

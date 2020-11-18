@@ -1,16 +1,21 @@
 package com.example.photomemo
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import androidx.lifecycle.ViewModel
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddPhotoActivity : AppCompatActivity() {
     private val pickPhotoRequestCode = 4
@@ -44,6 +49,7 @@ class AddPhotoActivity : AppCompatActivity() {
             }
             finish()
         }
+        viewModel = ViewModelProvider(this).get(AddPhotoViewModel::class.java)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -66,5 +72,20 @@ class AddPhotoActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+}
+
+class AddPhotoViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: PhotoRepository
+    val allPhotos: LiveData<List<Photo>>
+
+    init {
+        val photoDao = PhotoRoomDatabase.getPhotoDatabase(application).photoDao()
+        repository = PhotoRepository(photoDao)
+        allPhotos = repository.allPhotos
+    }
+
+    fun insert (photo:Photo) = viewModelScope.launch(Dispatchers.IO){
+        repository.insert(photo)
     }
 }
